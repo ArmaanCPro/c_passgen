@@ -4,7 +4,13 @@
 
 int main(int, char*[])
 {
-    int x = test_r5();
-    printf("val: %i\n", x);
+    password_policy pp;
+    pp_init(&pp);
+    password_gen pg;
+    pg_init(&pg, &pp);
+
+    char* pwd = pg_generate_advanced(&pg);
+
+    printf("val: %s\n", pwd);
     return 0;
 }
