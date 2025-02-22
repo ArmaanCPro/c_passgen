@@ -1,4 +1,5 @@
 #include <sodium.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
 
@@ -27,31 +28,32 @@ void pp_init(password_policy* policy)
     policy->excluded_chars = "";
 }
 
+// helper function to see if a character is in the set
+bool is_char_in_set(const char* set, char c)
+{
+    while (set != NULL)
+    {
+        if (*set == c)
+        {
+            return true;
+        }
+        set++;
+    }
+    return false;
+}
+
 
 // returns a new array that does not contain the chars_to_remove
 char* c_remove_chars(const char* str, const char* chars_to_remove) 
 {
-    int i, j;
     int str_len = strlen(str);
-    int chars_len = strlen(chars_to_remove);
     char* new_str = (char*)malloc(str_len + 1);
     int new_str_index = 0;
 
-    for (i = 0; i < str_len; i++) 
+    for (int i = 0; i < str_len; i++)
     {
-        int should_remove = 0;
-        for (j = 0; j < chars_len; j++)
-        {
-            if (str[i] == chars_to_remove[j]) 
-            {
-                should_remove = 1;
-                break;
-            }
-        }
-        if (!should_remove)
-        {
+        if (!is_char_in_set(chars_to_remove, str[i]))
             new_str[new_str_index++] = str[i];
-        }
     }
 
     new_str[new_str_index] = '\0';
