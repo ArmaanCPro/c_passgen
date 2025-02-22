@@ -11,6 +11,10 @@ int main(int, char*[])
 
     char* pwd = pg_generate_advanced(&pg);
 
-    printf("val: %s\n", pwd);
+    printf("password 1: %s\n", pwd);
+
+    pp.password_length = 100;
+    pwd = pg_generate_advanced(&pg);
+    printf("password 2: %s\n", pwd);
     return 0;
 }
