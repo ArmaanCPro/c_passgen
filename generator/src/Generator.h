@@ -58,7 +58,7 @@ char* c_remove_chars(const char* str, const char* chars_to_remove) {
             new_str[new_str_index++] = str[i];
         }
     }
-    
+
     new_str[new_str_index] = '\0';
 
     return new_str;
@@ -67,7 +67,9 @@ char* c_remove_chars(const char* str, const char* chars_to_remove) {
 char* pg_generate_advanced(password_gen* pg)
 {
     char* available_chars = (char*)malloc(sizeof(s_LowerCaseChars) + sizeof(s_UpperCaseChars) + sizeof(s_NumbersChars) + sizeof(s_SymbolsChars) + 1);
-    char* password = (char*)malloc(sizeof(available_chars) + 1);
+    char* password = (char*)malloc(pg->pc->password_length + 1);
+
+    available_chars[0] = '\0';
 
     if (pg->pc->require_lc)
         strcat(available_chars, s_LowerCaseChars);
@@ -86,9 +88,11 @@ char* pg_generate_advanced(password_gen* pg)
         randombytes_buf(&randomIndex, sizeof(randomIndex));
         randomIndex %= strlen(available_chars);
 
-        char tmp[2] = { available_chars[randomIndex], '\0' };
-        strcat(password, tmp);
+        password[i] = available_chars[randomIndex];
     }
 
+    password[pg->pc->password_length] = '\0';
+
+    free(available_chars);
     return password;
 }
