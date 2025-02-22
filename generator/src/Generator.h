@@ -86,13 +86,12 @@ char* pg_generate_advanced(password_gen* pg)
     {
         unsigned char randomIndex;
         randombytes_buf(&randomIndex, sizeof(randomIndex));
-        randomIndex %= strlen(available_chars);
+        randomIndex %= strlen(filtered_chars);
 
-        password[i] = available_chars[randomIndex];
+        password[i] = filtered_chars[randomIndex];
     }
 
     password[pg->pc->password_length] = '\0';
 
-    free(available_chars);
     return password;
 }
