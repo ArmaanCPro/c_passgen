@@ -78,8 +78,8 @@ char* pg_generate_advanced(password_gen* pg)
         strcat(available_chars, s_NumbersChars);
     if (pg->pc->require_sym)
         strcat(available_chars, s_SymbolsChars);
-    
-    const char* filtered_chars = c_remove_chars(available_chars, pg->pc->excluded_chars);
+
+    char* filtered_chars = c_remove_chars(available_chars, pg->pc->excluded_chars);
     free(available_chars);
 
     for (size_t i = 0; i < pg->pc->password_length; i++)
@@ -93,5 +93,6 @@ char* pg_generate_advanced(password_gen* pg)
 
     password[pg->pc->password_length] = '\0';
 
+    free(filtered_chars);
     return password;
 }
