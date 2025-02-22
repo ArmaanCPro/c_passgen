@@ -28,20 +28,16 @@ void pp_init(password_policy* policy)
     policy->excluded_chars = "";
 }
 
-// helper function to see if a character is in the set
-bool is_char_in_set(const char* set, char c)
+// helper function to initialize a boolean array
+void init_char_set(const char* chars_to_remove, bool char_set[], unsigned int set_size)
 {
-    while (set != NULL)
+    memset(char_set, 0, set_size * sizeof(bool));
+    while (*chars_to_remove)
     {
-        if (*set == c)
-        {
-            return true;
-        }
-        set++;
+        char_set[(unsigned char)*chars_to_remove] = true;
+        chars_to_remove++;
     }
-    return false;
 }
-
 
 // returns a new array that does not contain the chars_to_remove
 char* c_remove_chars(const char* str, const char* chars_to_remove) 
@@ -50,9 +46,11 @@ char* c_remove_chars(const char* str, const char* chars_to_remove)
     char* new_str = (char*)malloc(str_len + 1);
     int new_str_index = 0;
 
+    bool char_set[256];
+    init_char_set(chars_to_remove, char_set, 256);
     for (int i = 0; i < str_len; i++)
     {
-        if (!is_char_in_set(chars_to_remove, str[i]))
+        if (!char_set[(unsigned char)str[i]])
             new_str[new_str_index++] = str[i];
     }
 

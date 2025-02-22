@@ -12,6 +12,7 @@ int main(int, char*[])
     free(pwd);
 
     pp.password_length = 100;
+    pp.excluded_chars = "qwertyuiopasdfghjkzxcvbnm";
     pwd = pg_generate_advanced(&pp);
     printf("password 2: %s\n", pwd);
     free(pwd);
