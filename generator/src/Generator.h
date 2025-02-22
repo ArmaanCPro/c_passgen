@@ -60,7 +60,6 @@ char* c_remove_chars(const char* str, const char* chars_to_remove) {
     }
 
     new_str[new_str_index] = '\0';
-
     return new_str;
 }
 
@@ -79,8 +78,9 @@ char* pg_generate_advanced(password_gen* pg)
         strcat(available_chars, s_NumbersChars);
     if (pg->pc->require_sym)
         strcat(available_chars, s_SymbolsChars);
-
-    available_chars = c_remove_chars(available_chars, pg->pc->excluded_chars);
+    
+    const char* filtered_chars = c_remove_chars(available_chars, pg->pc->excluded_chars);
+    free(available_chars);
 
     for (size_t i = 0; i < pg->pc->password_length; i++)
     {
